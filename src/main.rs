@@ -9,28 +9,24 @@ fn main() {
         panic!("selection-cipher.exe <cipher-key>");
     }
 
-    // check if there is a substitute character for all alphabets
-    key_is_26_chars(&args[1]);
-
-    // check if there are no repeated characters
-    no_repeats_in_key(&args[1]);
-
+    is_key_valid(&args[1]);
+    
     // get the text to encode
     let text = get_input();
-
+    
     // substitution
     let encoded = substitution(text, &args[1]);
-
+    
     println!("{}", encoded);
 }
 
-fn key_is_26_chars(key: &String) {
+fn is_key_valid(key: &String) {
+    // check if there is a substitute character for all alphabets
     if key.len() != 26 {
         panic!("Please enter 26 characters");
     } 
-}
-
-fn no_repeats_in_key(key: &String) {
+    
+    // check if there are no repeated characters
     let mut i = 0;
     while i < key.len() {
         let mut j = i + 1;
@@ -64,12 +60,12 @@ fn get_input() -> String {
 fn substitution(input: String, key: &String) -> String {
     let mut encoded = String::new();
     for letter in input.trim().chars() {
-        let bytes = letter as u8;
+        let ascii = letter as u8;
 
-        if bytes > 96 && bytes < 123 {
-            encoded = encoded + &format!("{}", key.chars().nth((bytes - 97) as usize).unwrap().to_lowercase());
-        } else if bytes > 64 && bytes < 91 {
-            encoded = encoded + &format!("{}", key.chars().nth((bytes - 65) as usize).unwrap().to_uppercase());
+        if ascii > 96 && ascii < 123 {
+            encoded = encoded + &format!("{}", key.chars().nth((ascii - 97) as usize).unwrap().to_lowercase());
+        } else if ascii > 64 && ascii < 91 {
+            encoded = encoded + &format!("{}", key.chars().nth((ascii - 65) as usize).unwrap().to_uppercase());
         } else {
             encoded = encoded + &format!("{}", letter);
         }
