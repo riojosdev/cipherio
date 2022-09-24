@@ -32,5 +32,22 @@ fn main() {
     let mut text = String::new();
     io::stdin().read_line(&mut text).expect("Failed to read the text!");
 
-    
+    // get the char
+    // find position in alphabet
+    // find the substitution letter
+    // substitute
+    let mut encoded = String::new();
+    for letter in text.trim().chars() {
+        let bytes = letter as u8;
+
+        if bytes > 96 && bytes < 123 {
+            encoded = encoded + &format!("{}", args[1].chars().nth((bytes - 97) as usize).unwrap().to_lowercase());
+        } else if bytes > 64 && bytes < 91 {
+            encoded = encoded + &format!("{}", args[1].chars().nth((bytes - 65) as usize).unwrap().to_uppercase());
+        } else {
+            encoded = encoded + &format!("{}", letter);
+        }
+    }
+
+    println!("{}", encoded);
 }
